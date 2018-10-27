@@ -1,0 +1,22 @@
+{
+  "name": "evrx-tt",
+  "version": "1.0.0",
+  "description": "lets the party begin",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serjout/evrx-tt.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/serjout/evrx-tt/issues"
+  },
+  "homepage": "https://github.com/serjout/evrx-tt#readme",
+  "dependencies": {
+    "jasmine": "^3.3.0"
+  }
+}

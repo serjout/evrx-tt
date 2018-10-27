@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/serjout/evrx-tt#readme",
   "dependencies": {
-    "jasmine": "^3.3.0"
+    "bignumber.js": "git+https://github.com/frozeman/bignumber.js-nolookahead.git",
+    "jasmine": "^3.3.0",
+    "web3": "0.20.7"
   }
 }

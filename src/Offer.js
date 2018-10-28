@@ -12,7 +12,7 @@ class Offer {
      * 
      * @param {Token} token1 
      * @param {Token} token2 
-     * @param {Offer => boolean} stopIfTrue 
+     * @param {Offer => boolean} stopIfFalse 
      */
     static async getOffersUntil(token1, token2, stopIfFalse = createDownCount(20)) {
         // let stopLogQueueBlocking;
@@ -40,7 +40,7 @@ class Offer {
         return result;
     }
 
-    static async getVolumePrice(token1, token2, volume = BigInt(0)) {
+    static async getBuyVolume(token1, token2, volume = BigInt(0)) {
         let sumPay = BigInt(0);
         let sumBuy = BigInt(0);
 
@@ -110,8 +110,7 @@ class Offer {
         const fromBlock = await fromBlockPromise;
         const cancel = () => loop = true;
 
-        // LogInsert
-        // LogUn..
+        
         
         return cancel;
     }

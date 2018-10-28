@@ -1,8 +1,8 @@
-const { theContract } = require('../src/the-contract');
-const { theWeb3, fromBlockPromise } = require('../src/the-web3');
-const { Trade } = require('./Trade');
+const { theContract } = require('../the-contract');
+const { theWeb3, fromBlockPromise } = require('../the-web3');
+const { Trade } = require('../Trade');
 
-class TradeStore { 
+class TradeService { 
     async getPastTrades(limit) {
         if (this._tradeLog === undefined) {
             await this.syncTrades();
@@ -40,4 +40,4 @@ class TradeStore {
     }
 }
 
-module.exports = { TradeStore };
+module.exports = { TradeService };

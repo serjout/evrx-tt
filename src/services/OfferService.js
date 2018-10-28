@@ -1,14 +1,16 @@
-const { theContract } = require('./the-contract');
-const { theWeb3, fromBlockPromise } = require('./the-web3');
-const { Token } = require('./Token');
-const { Offer } = require('./Offer');
-const { moveDecimalPoint } = require('./utils/move-decimal-point');
+const { theContract } = require('../the-contract');
+const { theWeb3, fromBlockPromise } = require('../the-web3');
+const { Token } = require('../Token');
+const { Offer } = require('../Offer');
+const { moveDecimalPoint } = require('../utils/move-decimal-point');
 
-const { PRECISION, PRECISION_MUL } = require('./const');
+const { PRECISION, PRECISION_MUL } = require('../const');
+
+// TODO listen events and update loaded orders
 
 const createDownCount = count => () => count-- !== 0;
 
-class OfferStore {
+class OfferService {
     /**
      * 
      * @param {Token} token1 
@@ -58,10 +60,10 @@ class OfferStore {
                     const rate = surplusBuy * PRECISION_MUL / offer.buy.amount;
                     const surplusPay = offer.pay.amount * rate / PRECISION_MUL;
 
-                    console.log('surplusPay', surplusPay);
-                    console.log('surplusPay sub', offer.pay.amount - surplusPay);
-                    console.log(moveDecimalPoint(offer.pay.amount * PRECISION_MUL / surplusPay, -PRECISION));
-                    console.log(moveDecimalPoint(offer.buy.amount * PRECISION_MUL / surplusBuy, -PRECISION));
+                    // console.log('surplusPay', surplusPay);
+                    // console.log('surplusPay sub', offer.pay.amount - surplusPay);
+                    // console.log(moveDecimalPoint(offer.pay.amount * PRECISION_MUL / surplusPay, -PRECISION));
+                    // console.log(moveDecimalPoint(offer.buy.amount * PRECISION_MUL / surplusBuy, -PRECISION));
 
                     sumPay += offer.pay.amount - surplusPay;
                     sumBuy += offer.buy.amount - surplusBuy;
@@ -75,7 +77,7 @@ class OfferStore {
         }
 
         const offers = await this.getOffersUntil(token1, token2, predicate);
-        console.log('sumBuy ', sumBuy, 'volume ', volume, 'sumPay ', sumPay);
+        // console.log('sumBuy ', sumBuy, 'volume ', volume, 'sumPay ', sumPay);
 
         return {
             minPrice:  offers[0].decimalPrice,
@@ -150,4 +152,4 @@ class OfferStore {
     }
 }
 
-module.exports = { OfferStore };
+module.exports = { OfferService };

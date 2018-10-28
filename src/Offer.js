@@ -3,8 +3,7 @@ const { theWeb3, fromBlockPromise } = require('./the-web3');
 const { Token } = require('./Token');
 const { moveDecimalPoint } = require('./utils/move-decimal-point');
 
-const PRECISION = 20;
-const PRECISION_MUL = BigInt(10) ** BigInt(PRECISION);
+const { PRECISION, PRECISION_MUL } = require('./const');
 
 class Offer {
     constructor(id, maker, payToken, payAmount, buyToken, buyAmount, timestamp) {

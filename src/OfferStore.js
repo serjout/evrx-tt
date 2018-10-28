@@ -4,9 +4,9 @@ const { Token } = require('./Token');
 const { Offer } = require('./Offer');
 const { moveDecimalPoint } = require('./utils/move-decimal-point');
 
+const { PRECISION, PRECISION_MUL } = require('./const');
+
 const createDownCount = count => () => count-- !== 0;
-const PRECISION = 20;
-const PRECISION_MUL = BigInt(10) ** BigInt(PRECISION);
 
 class OfferStore {
     /**

@@ -1,0 +1,139 @@
+LogAddTokenPairWhitelist (baseToken: address, quoteToken: address) => [] // event
+
+LogBump (id: bytes32, pair: bytes32, maker: address, pay_gem: address, buy_gem: address, pay_amt: uint128, buy_amt: uint128, timestamp: uint64) => [] // event
+
+LogBuyEnabled (isEnabled: bool) => [] // event
+
+LogDelete (keeper: address, id: uint256) => [] // event
+
+LogInsert (keeper: address, id: uint256) => [] // event
+
+LogItemUpdate (id: uint256) => [] // event
+
+LogKill (id: bytes32, pair: bytes32, maker: address, pay_gem: address, buy_gem: address, pay_amt: uint128, buy_amt: uint128, timestamp: uint64) => [] // event
+
+LogMake (id: bytes32, pair: bytes32, maker: address, pay_gem: address, buy_gem: address, pay_amt: uint128, buy_amt: uint128, timestamp: uint64) => [] // event
+
+LogMatchingEnabled (isEnabled: bool) => [] // event
+
+LogMinSell (pay_gem: address, min_amount: uint256) => [] // event
+
+LogNote (sig: bytes4, guy: address, foo: bytes32, bar: bytes32, wad: uint256, fax: bytes) => [] // event
+
+LogRemTokenPairWhitelist (baseToken: address, quoteToken: address) => [] // event
+
+LogSetAuthority (authority: address) => [] // event
+
+LogSetOwner (owner: address) => [] // event
+
+LogSortedOffer (id: uint256) => [] // event
+
+LogTake (id: bytes32, pair: bytes32, maker: address, pay_gem: address, buy_gem: address, taker: address, take_amt: uint128, give_amt: uint128, timestamp: uint64) => [] // event
+
+LogTrade (pay_amt: uint256, pay_gem: address, buy_amt: uint256, buy_gem: address) => [] // event
+
+LogUnsortedOffer (id: uint256) => [] // event
+
+_best (: address, : address) => [: uint256] // function
+
+_dust (: address) => [: uint256] // function
+
+_menu (: bytes32) => [: bool] // function
+
+_near (: uint256) => [: uint256] // function
+
+_rank (: uint256) => [next: uint256, prev: uint256, delb: uint256] // function
+
+_span (: address, : address) => [: uint256] // function
+
+addTokenPairWhitelist (baseToken: address, quoteToken: address) => [: bool] // function
+
+authority () => [: address] // function
+
+bump (id_: bytes32) => [] // function
+
+buy (id: uint256, amount: uint256) => [: bool] // function
+
+buyAllAmount (buy_gem: address, buy_amt: uint256, pay_gem: address, max_fill_amount: uint256) => [fill_amt: uint256] // function
+
+buyEnabled () => [: bool] // function
+
+cancel (id: uint256) => [success: bool] // function
+
+close_time () => [: uint64] // function
+
+del_rank (id: uint256) => [: bool] // function
+
+getBestOffer (sell_gem: address, buy_gem: address) => [: uint256] // function
+
+getBetterOffer (id: uint256) => [: uint256] // function
+
+getBuyAmount (buy_gem: address, pay_gem: address, pay_amt: uint256) => [fill_amt: uint256] // function
+
+getFirstUnsortedOffer () => [: uint256] // function
+
+getMinSell (pay_gem: address) => [: uint256] // function
+
+getNextUnsortedOffer (id: uint256) => [: uint256] // function
+
+getOffer (id: uint256) => [: uint256, : address, : uint256, : address] // function
+
+getOfferCount (sell_gem: address, buy_gem: address) => [: uint256] // function
+
+getOwner (id: uint256) => [owner: address] // function
+
+getPayAmount (pay_gem: address, buy_gem: address, buy_amt: uint256) => [fill_amt: uint256] // function
+
+getTime () => [: uint64] // function
+
+getWorseOffer (id: uint256) => [: uint256] // function
+
+insert (id: uint256, pos: uint256) => [: bool] // function
+
+isActive (id: uint256) => [active: bool] // function
+
+isClosed () => [closed: bool] // function
+
+isOfferSorted (id: uint256) => [: bool] // function
+
+isTokenPairWhitelisted (baseToken: address, quoteToken: address) => [: bool] // function
+
+kill (id: bytes32) => [] // function
+
+last_offer_id () => [: uint256] // function
+
+make (pay_gem: address, buy_gem: address, pay_amt: uint128, buy_amt: uint128) => [: bytes32] // function
+
+matchingEnabled () => [: bool] // function
+
+offer (pay_amt: uint256, pay_gem: address, buy_amt: uint256, buy_gem: address) => [: uint256] // function
+
+offer (pay_amt: uint256, pay_gem: address, buy_amt: uint256, buy_gem: address, pos: uint256) => [: uint256] // function
+
+offer (pay_amt: uint256, pay_gem: address, buy_amt: uint256, buy_gem: address, pos: uint256, rounding: bool) => [: uint256] // function
+
+offers (: uint256) => [pay_amt: uint256, pay_gem: address, buy_amt: uint256, buy_gem: address, owner: address, timestamp: uint64] // function
+
+owner () => [: address] // function
+
+remTokenPairWhitelist (baseToken: address, quoteToken: address) => [: bool] // function
+
+sellAllAmount (pay_gem: address, pay_amt: uint256, buy_gem: address, min_fill_amount: uint256) => [fill_amt: uint256] // function
+
+setAuthority (authority_: address) => [] // function
+
+setBuyEnabled (buyEnabled_: bool) => [: bool] // function
+
+setMatchingEnabled (matchingEnabled_: bool) => [: bool] // function
+
+setMinSell (pay_gem: address, dust: uint256) => [: bool] // function
+
+setOwner (owner_: address) => [] // function
+
+stop () => [] // function
+
+stopped () => [: bool] // function
+
+take (id: bytes32, maxTakeAmount: uint128) => [] // function
+
+undefined (close_time: uint64) => [] // constructor

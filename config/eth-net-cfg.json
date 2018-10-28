@@ -1,0 +1,11 @@
+{
+    "live": {
+        "nodeUrl": "https://mainnet.infura.io/v3/4111419e4ca44e0e8a2597f502fc3411",
+        "defaultAccount": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+        "x": "/v3/4111419e4ca44e0e8a2597f502fc3411"
+    },
+    "kovan": {
+        "nodeUrl": "https://kovan.infura.io/v3/4111419e4ca44e0e8a2597f502fc3411",
+        "defaultAccount": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf"
+    }
+}

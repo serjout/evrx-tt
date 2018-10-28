@@ -1,12 +1,12 @@
 const React = require('react');
-const s = require('./style.styl');
+const s = require('./index.styl');
 
-class Trade {
-
-
+class Trade extends React.Component {
     render() {
         return (
-            'Trade'
+            <div className={s.Root} data-cmp-name={Trade.name}>
+                Trade
+            </div>
         );
     }
 }

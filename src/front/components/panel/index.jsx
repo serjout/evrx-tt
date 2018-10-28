@@ -1,12 +1,12 @@
 const React = require('react');
-const s = require('./style.styl');
+const s = require('./index.styl');
 
-class Panel {
-
-
+class Panel extends React.Component {
     render() {
         return (
-            'Panel'
+            <div className={s.Root} data-cmp-name={Panel.name}>
+                Panel
+            </div>
         );
     }
 }

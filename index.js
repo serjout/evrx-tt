@@ -3,7 +3,8 @@ const { theContract } = require('./src/the-contract');
 const BigNumber = require('bignumber.js');
 const { OfferService } = require('./src/services/OfferService');
 const { Token } = require('./src/Token');
-
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 (async () => {
     // "W-ETH": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
@@ -17,3 +18,14 @@ const { Token } = require('./src/Token');
     console.log('>>>> ', result);
     console.log('>>>> ', offers.join('\n'));
 })();
+
+if (typeof window !== undefined) {
+    const { MainLayout } = require('./src/front/layout/main.jsx');
+
+    ReactDOM.render(
+        React.createElement(MainLayout),
+        document.querySelector('#react-root')
+      );
+}
+
+

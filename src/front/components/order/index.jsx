@@ -1,14 +1,14 @@
 const React = require('react');
-const s = require('./style.styl');
+const s = require('./index.styl');
 
-class XXX {
-
-
+class Order extends React.Component {
     render() {
         return (
-            'XXX'
+            <div className={s.Root} data-cmp-name={Order.name}>
+                {`Order ${s.Root}`}
+            </div>
         );
     }
 }
 
-module.exports = { XXX };
+module.exports = { Order };

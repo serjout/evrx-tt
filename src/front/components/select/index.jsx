@@ -1,12 +1,12 @@
 const React = require('react');
-const s = require('./style.styl');
+const s = require('./index.styl');
 
-class Select {
-
-
+class Select extends React.Component {
     render() {
         return (
-            'Select'
+            <div className={s.Root} data-cmp-name={Select.name}>
+                Select
+            </div>
         );
     }
 }

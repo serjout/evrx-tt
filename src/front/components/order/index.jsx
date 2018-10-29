@@ -4,7 +4,7 @@ const s = require('./index.styl');
 class Order extends React.Component {
     render() {
         return (
-            <div className={s.Root} data-cmp-name={Order.name}>
+            <div className={s.Root} data-cmp-name="Order">
                 {`Order ${s.Root}`}
             </div>
         );

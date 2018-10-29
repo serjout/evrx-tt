@@ -1,0 +1,25 @@
+@require 'guide.styl';
+
+$panel-border-color = $color-light-gray;   
+$panel-color-bg = $color-white;
+$panel-border-radius = 4px; 
+$panel-box-shadow = 0 1px 3px 0 rgba(0,0,0,.13);
+
+.Root {
+    box-sizing: border-box;
+    display: flex;
+    margin: 5px;
+    padding: 10px;
+    border: solid 1px $panel-border-color;
+    border-radius: $panel-border-radius;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    min-height: 70px;
+    box-shadow: $panel-box-shadow;
+    background-color: $panel-color-bg;
+}
+
+.Inner {
+    margin: auto;
+}

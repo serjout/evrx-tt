@@ -1,14 +1,18 @@
 const React = require('react');
 const s = require('./index.styl');
+const cn = require('classnames');
 
 class Panel extends React.Component {
     render() {
         return (
-            <div className={s.Root} data-cmp-name={Panel.name}>
-                Panel
-            </div>
+            <section className={cn(s.Root, this.props.className)} data-cmp-name="Panel">
+                <div className={s.Inner}>
+                    {this.props.children}
+                </div>
+            </section>
         );
     }
 }
 
-module.exports = { Panel };
+Panel.Panel = Panel
+module.exports = Panel;

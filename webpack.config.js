@@ -2,14 +2,19 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-module.exports = (env, argv) => ({
+console.log(path.join(__dirname, 'src/front/guide.styl'));
+
+module.exports = (env, argv = { mode: 'development' }) => ({
   entry: './index.js',
   output: {
     path: path.resolve(__dirname, 'docs'),
     filename: 'index.js'
   },
   resolve: {
-    extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx']
+    extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
+    alias: {
+      './guide.styl$': path.join(__dirname, 'src/front/guide.styl')
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './index.html', hash: true }),
@@ -31,7 +36,12 @@ module.exports = (env, argv) => ({
               minimize: argv.mode !== 'development',
             },
           },
-          'stylus-loader',
+          {
+            loader: 'stylus-loader',
+            options: {
+              preferPathResolver: 'webpack'
+            }
+          },
         ],
       },
       { 

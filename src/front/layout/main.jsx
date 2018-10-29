@@ -7,11 +7,16 @@ const { Trade } = require('../components/trade');
 
 class MainLayout extends React.Component {
     render() {
-        return  <div className={s.Root} data-cmp-name={MainLayout.name}>
-            <Order />
-            <Panel />
-            <Select />
-            <Trade />
+        return  <div className={s.Root} data-cmp-name="MainLayout">
+            <Panel>
+                <Order />
+            </Panel>
+            <Panel>
+                <Select />
+            </Panel>
+            <Panel>
+                <Trade />
+            </Panel>
         </div>
     }
 }

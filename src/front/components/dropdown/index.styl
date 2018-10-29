@@ -1,0 +1,152 @@
+@require 'guide.styl';
+
+$dd-input-color = $color-dark-gray;
+$dd-input-bg-color = $color-white;
+$dd-input-bg-disabled-color = $color-light-gray-border;
+$dd-input-border-color = $color-gray;
+$dd-input-border-hover-color = $color-black;
+$dd-input-active-border-shadow = $button-focus-shadow;
+$dd-input-popup-shadow = $shadow-1;
+$dd-input-popup-border-color = $color-light-gray-border;
+$dd-outer-space = 2px;
+$dd-transition-time = 0.3s;
+
+.Root {
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    overflow: visible;
+    padding: $dd-outer-space;
+    color: $dd-input-color;
+    background: $dd-input-bg-color;
+
+    &_disabled {
+
+    }
+
+    &_expanded {
+        
+    }
+}
+
+.Popup {
+    box-sizing: border-box;
+    transition: max-width $dd-transition-time ease 0s, 
+        max-height $dd-transition-time ease 0s, 
+        opacity $dd-transition-time ease 0s,
+        visibility 0s step-end 0s,
+        top $dd-transition-time ease 0s;
+
+    z-index: 100;
+
+    max-width: 0;
+    max-height: 0;
+    min-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    width: 0;
+    height 0;
+
+    position: absolute;
+    margin: 4px 0 0 0;
+    padding: 0;
+
+    cursor: default;
+    box-shadow: $dd-input-popup-shadow;
+    background: $dd-input-bg-color;
+    border: solid 1px $dd-input-popup-border-color;
+
+    visibility: hidden;
+
+    &_visible {     
+        min-width: 100%;
+        max-width: 100vw;
+        max-height: 100vh;
+        opacity: 1;
+        width: auto;
+        height auto;
+
+        visibility: visible;
+    }
+}
+
+@media screen and (max-width: $mobile-width) {
+    .Popup {   
+        border: none;
+        box-shadow: none;
+        position: fixed;
+        top: 100vh;
+        left: 0;  
+
+        &_visible {
+            margin: 0;
+            width: 100vw;
+            height: 100vh;   
+            top: 0;
+            left: 0;   
+        }
+    }
+}
+
+.Button {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 0 25px 0 10px;
+    line-height: 30px;
+    font-size: 14px;
+    border: $button-border;
+    border-radius: $button-border-radius;
+    text-align: left;
+    position: relative;
+    box-shadow: none;
+    transition: box-shadow 0.1s 0.1s, border-color 0.1s 0.1s;
+    outline: none;
+    background-color: var(--dropdown-input-button-bg-color);
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover {
+        border: 1px solid $dd-input-border-hover-color;
+        outline: none;
+    }
+
+    &:focus {
+        border-color: $dd-input-border-hover-color;
+        outline: none;
+        box-shadow: $dd-input-active-border-shadow;
+    }
+
+    &:after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        position: absolute;
+        border: solid $dd-input-border-color 1px;
+        border-right-width: 0;
+        border-bottom-width: 0;
+        top: 50%;
+        right: 9px;
+        transform: translate(0, -4px) rotateZ(225deg);
+        transition: transform 100ms;
+    }
+
+    &_pressed {
+        &:after {
+            transform: translate(0, -1px) rotateZ(45deg);
+        }
+    }
+
+    &_disabled {
+        cursor: default;
+        background-color: $dd-input-bg-disabled-color;
+        opacity: 0.5;
+        &:hover,
+        &:focus,
+        &:active {
+            border: 1px solid $dd-input-border-color;
+            box-shadow: 0 0;
+        }
+    }
+}
+

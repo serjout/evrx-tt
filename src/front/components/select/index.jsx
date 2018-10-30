@@ -9,6 +9,15 @@ class Select extends React.Component {
         onChange: propTypes.func,
         mapOfValues: propTypes.object,
         value: propTypes.string,
+        name: propTypes.string,
+        className: propTypes.string,
+        disabled: propTypes.bool,
+    }
+
+    static defaultProps = {
+        value: '',
+        mapOfValues: {},
+        name: '',
     }
 
     state = {
@@ -36,6 +45,7 @@ class Select extends React.Component {
             key,
             value: this.props.mapOfValues[key],
             event,
+            name: this.props.name,
         })
 
         this.setState(
@@ -46,19 +56,22 @@ class Select extends React.Component {
 
     render() {
         const p = this.props;
+        const keys = Object.keys(p.mapOfValues);
+        const disabled = p.disabled || keys.length === 0;
 
         return (
             <Dropdown 
                 ref={this.ddRef}
-                className={s.Root} 
+                className={cn(s.Root, p.className, { [s.Root_disabled]: disabled })} 
                 cmpName="Select"
                 innerContent={p.value}
                 isExpanded={this.state.isExpanded}
                 onRequireClose={this.handleClose}
                 onButtonClick={this.handleClick}
+                disabled={disabled}
             >
                 <ul className={s.List}>
-                    {Object.keys(p.mapOfValues).map(key => {
+                    {keys.map(key => {
                         return <li className={s.Item} key={key}>
                             <button className={s.Button} onClick={this.handleChange} value={key}>
                                 {key}

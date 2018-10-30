@@ -75,8 +75,8 @@ class Dropdown extends React.Component {
                 className={cn(
                     p.className,
                     s.Root,
-                    p.disabled ? Root_disabled : null,
                     {
+                        [s.Root_disabled]: p.disabled,
                         [s.Root_expanded]: p.isExpanded,
                     },
                 )}
@@ -87,6 +87,7 @@ class Dropdown extends React.Component {
                     className={cn(
                         s.Button,
                         {
+                            [s.Button_disabled]: p.disabled,
                             [s.Button_pressed]: p.isExpanded
                         }
                     )}
@@ -95,7 +96,7 @@ class Dropdown extends React.Component {
                 >
                     {p.innerContent}
                 </Tag>
-                <TagPopup 
+                {p.disabled ? null : <TagPopup 
                     className={cn(
                         s.Popup,
                         {
@@ -104,7 +105,7 @@ class Dropdown extends React.Component {
                     )}
                 >
                     {p.children}
-                </TagPopup>
+                </TagPopup>}
             </div>
         );
     }

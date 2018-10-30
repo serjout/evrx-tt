@@ -2,9 +2,13 @@
 
 $main-color-bg = #f8f7f5;
 
+body {
+    background-color: $main-color-bg;
+}
+
 .Root {
     box-sizing: border-box;
-    margin: 0;
+    margin: 0 auto;
     padding: 10px;
     border: none;
     width: 100vw;
@@ -13,10 +17,51 @@ $main-color-bg = #f8f7f5;
     justify-content: flex-start;
     align-items: stretch;
     gap: 10px;
-    background-color: $main-color-bg;
-    min-height: 100vh;
+    min-height: 100vh; 
 }
 
 .Item {
 
+}
+
+.PairSelectors {
+    display: flex;
+}
+
+.Select {
+    flex: 0 1 50%;
+}
+
+.TradeList {
+    display: block;
+    margin: 10px;
+    padding: 0;
+    flex-grow: 1;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.TradeItem {
+    display: block;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.SubHeader {
+    ont-size: 18px;
+    font-weight: bold;
+}
+
+.Header {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+@media screen and (min-width: $mobile-width) {
+    .Root {
+        width: 800px;
+    }
 }

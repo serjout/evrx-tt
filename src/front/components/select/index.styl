@@ -1,6 +1,7 @@
 @require 'guide.styl';
 
 .Root {
+
 }
 
 .List {
@@ -9,21 +10,15 @@
     display: flex;
     display: flex;
     flex-wrap: wrap;
-    min-width: 300px;
-}
-
-@media screen and (max-width: $mobile-width) {
-    .List {
-        min-width: 0;
-    }
+    min-width: 350px;
 }
 
 .Item {
     list-style: none;
-    min-width: 25%;
     padding: 2px;
     margin: 0;
     box-sizing: border-box;
+    flex: 0 1 25%;
 }
 
 .Button {
@@ -61,5 +56,16 @@
         border-color: $color-gray;
         background-color: $color-hightlighted;
         box-shadow: $shadow-in
+    }
+}
+
+@media screen and (max-width: $mobile-width) {
+    .List {
+        min-width: 0;
+    }
+
+    .Button {
+        padding: 5px;
+        height: 100%;
     }
 }

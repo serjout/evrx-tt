@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jasmine",
-    "build": "webpack --config webpack.config.js --mode=development",
-    "prod": "webpack --config webpack.config.js --mode=production",
-    "server": "lite-server --baseDir docs"
+    "dev": "webpack-dev-server --mode=development",
+    "watch": "webpack --config webpack.config.js --mode=development --watch",
+    "build": "webpack --config webpack.config.js --mode=production",
+    "sg": "styleduidist server"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,8 @@
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@babel/plugin-syntax-async-generators": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
@@ -49,6 +52,7 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "webpack": "^4.23.1",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   }
 }

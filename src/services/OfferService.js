@@ -1,23 +1,20 @@
 const { theContract } = require('../the-contract');
 const { theWeb3, fromBlockPromise } = require('../the-web3');
-const { Token } = require('../Token');
-const { Offer } = require('../Offer');
 const { moveDecimalPoint } = require('../utils/move-decimal-point');
 
 const { PRECISION, PRECISION_MUL } = require('../const');
 
-// TODO listen events and update loaded orders
-
 const createDownCount = count => () => count-- !== 0;
 
-class OfferService {
+// TODO listen events and update loaded orders
+module.exports = ({ Token, Offer }) => class OfferService {
     /**
      * 
      * @param {Token} token1 
      * @param {Token} token2 
      * @param {Offer => boolean} stopIfFalse 
      */
-     async getOffersUntil(token1, token2, stopIfFalse = createDownCount(19)) {
+    async getOffersUntil(token1, token2, stopIfFalse = createDownCount(19)) {
         // let stopLogQueueBlocking;
         // this._untilLogQueueBlock = new Promise(done => stopLogQueueBlocking = done);
 
@@ -27,6 +24,11 @@ class OfferService {
 
         if (curr === undefined) {
             const id = await theContract.methods.getBestOffer(token1.address, token2.address).call();
+            
+            if (BigInt(id) === BigInt(0)) {
+                return result;
+            }
+
             curr = await this.getById(id);
             this._mapPairToBest[pairKey] = curr;
             result.push(curr);
@@ -34,7 +36,7 @@ class OfferService {
 
         while(stopIfFalse(curr) && curr._next !== undefined) {
             const next = await this.getById(curr._next);
-            next._prev = curr;
+            next._prev = curr.id;
             curr = next;
             result.push(curr);
         }
@@ -129,7 +131,7 @@ class OfferService {
                 theContract.methods.getWorseOffer(id).call(),
             ]);
             const offer = new Offer(id, o.owner, o.pay_gem, o.pay_amt, o.buy_gem, o.buy_amt, o.timestamp);
- 
+
             offer._next = nextId;
             this._offers[offer.id] = offer;
         }
@@ -151,5 +153,3 @@ class OfferService {
         // this._logQueuePromise = undefined;
     }
 }
-
-module.exports = { OfferService };

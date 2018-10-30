@@ -45,10 +45,15 @@ module.exports = (env, argv = { mode: 'development' }) => ({
         ],
       },
       { 
-          test: /\.js[x]$/, 
+          test: /\.jsx?$/, 
           exclude: /node_modules/, 
           loader: "babel-loader"
       }
     ]
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'docs'),
+    compress: false,
+    port: 9000
   }
 });

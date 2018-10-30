@@ -1,14 +1,13 @@
 const{ theWeb3 } = require('../src/the-web3');
 const { theContract } = require('../src/the-contract');
 const BigNumber = require('bignumber.js');
-const { TradeService } = require('../src/services/TradeService');
-const { Trade } = require('../src/Trade');
+const { Trade, TradeService } = require('../src/_index');
 
 describe('TradeService', () => {
     it('should return list of last trades', async () => {
-        const store = new TradeService();
+        const service = new TradeService();
     
-        const trades = await store.getPastTrades(4);
+        const trades = await service.getPastTrades(4);
 
         expect(trades.length).toBe(4);
         expect(trades[0].constructor).toBe(Trade);

@@ -41,9 +41,6 @@ body {
 
 .List {
     display: block;
-    margin: 10px;
-    padding: 0;
-    flex-grow: 1;
     box-sizing: border-box;
     margin: 15px;
     padding: 0 15px;
@@ -78,16 +75,17 @@ body {
 
 .ListPanel {
     transition: 
-        height ease 0.5s,
-        align-items ease 0.5s,
-        justify-content ease 0.5s;
+        min-height ease 0.5s,
+        height ease 0.5s;
     height: 60vw;
+    min-height: 300px;
     display: flex;
     flex-direction: column;
 }
 
 .ListPanel_collapsed {
     height: 20px;
+    min-height: 20px;
     align-items: center;
     justify-content: center;
 }

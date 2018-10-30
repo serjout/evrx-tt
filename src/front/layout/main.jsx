@@ -27,7 +27,7 @@ const MainLayout = observer(class _ extends React.Component {
         return  <div className={s.Root} data-cmp-name="MainLayout">
             <Panel className={s.Top}>
                 <h1 className={s.Header}>
-                    {`Pair ${store.leftToken} / ${ store.rightToken || '---' }`}
+                    {`OasisDex.com ${store.leftToken}/${ store.rightToken || '---' }`}
                 </h1>
             </Panel>
             <Panel className={s.PairSelectors}>
@@ -80,7 +80,7 @@ const MainLayout = observer(class _ extends React.Component {
                     <h2 className={s.ListHeader}>
                         {cn({
                             "Loading...": !hasTrades,
-                            "Past orders": hasTrades,
+                            "Past trades": hasTrades,
                         })}
                     </h2>
                     {hasTrades && <ul className={s.List}>

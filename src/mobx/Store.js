@@ -5,7 +5,8 @@ const {
     flow, 
     configure, 
     action,
-    autorun
+    autorun,
+    runInAction,
 } = require("mobx");
 
 configure({
@@ -131,24 +132,39 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
             }
         })
 
-        fetchPastOffers(token1, token2) {
+        async fetchPastOffers(token1, token2) {
             if (this._fetchPastOffers_task) {
                 this._fetchPastOffers_task.cancel();
             }
             
-            this._fetchPastOffers_task = this._fetchPastOffers(token1, token2);
+
+            let task;
+            try {
+
+                task = this._fetchPastOffers_task = this._fetchPastOffers(token1, token2);
+                await task;
+
+            } catch(e) {
+                // can be canceled
+                
+            } finally {runInAction(() => {
+                // if still our task
+                if (task === this._fetchPastOffers_task) {
+                    this._fetchPastOffers_task = undefined;
+                }
+            });}
         }
 
         clearPastOffer() {
             if (this._fetchPastOffers_task) {
                 this._fetchPastOffers_task.cancel();
-                this._fetchPastOffers_task = undefined;
             }
 
             this.pastOffers = [];
         }
 
         get isOrderLoading() {
+            const s = Symbol('check promise pending');
             return this._fetchPastOffers_task !== undefined;
         }
 

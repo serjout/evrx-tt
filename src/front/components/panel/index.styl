@@ -7,20 +7,25 @@ $panel-box-shadow = 0 1px 3px 0 rgba(0,0,0,.13);
 
 .Root {
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
-    padding: 10px;
-    border: solid 1px $panel-border-color;
-    border-radius: $panel-border-radius;
-    justify-content: center;
-    align-items: center;
-    min-width: 100px;
-    min-height: 70px;
-    box-shadow: $panel-box-shadow;
-    background-color: $panel-color-bg;
+    background: transparent;
+    border: 0 none;
+    margin: 0;
+    padding: 5px;
 }
 
 .Inner {
-    margin: auto;
+    box-shadow: $panel-box-shadow;
+    background-color: $panel-color-bg;
+    border: solid 1px $panel-border-color;
+    border-radius: $panel-border-radius;
+    box-sizing: border-box;
+    display: flex;
+    margin: 0;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+     min-width: 50px;
+    min-height: 50px;  
 }

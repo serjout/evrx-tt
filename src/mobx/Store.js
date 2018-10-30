@@ -27,9 +27,6 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
             const [leftToken] = Token.getFewTokens(2);
             this.leftToken = leftToken;
 
-            const tokens = Token.getFewTokens();
-            this.tokens = tokens.reduce((acc, t) => (acc[t.ticker] = t, acc), {});
-
             this.offerService = new OfferService();
             this.tradeService = new TradeService();  
             this.tokenService = new TokenService();
@@ -44,17 +41,40 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
                 const left = this.leftToken;
                 const right = this.rightToken;
 
-                console.log('>>> fetch', left, right);
-
-                this.fetchPastOffers(left, right);
+                if (left && right) {
+                    this.fetchPastOffers(left, right);
+                } else {
+                    this.clearPastOffer()
+                }
             });
 
             this.tradeService.syncTrades();
             this.tradeService.setListener(this.onUpdateTrade);
 
-            this.tokenService.syncMapTokenAddrToPair().then(action(map => this.mapTokenAddrToPair = map));
+            this.tokenService.syncMapTokenAddrToPair().then(this.setTokenPairs);
 
             this.isInited = true;
+        }
+
+        setTokenPairs = (map) => {
+            this.mapTokenAddrToPair = map;
+            let first;
+
+            const tokens = Token.getFewTokens();
+            this.tokens = tokens.reduce((acc, t) => {
+                if (map.get(t.address)?.size > 0) {
+                    acc[t.ticker] = t; 
+
+                    if (!first) {
+                        first = t;
+                    }
+                }
+                return acc;
+            }, {});
+
+            if (!map.has(this.leftToken.address)) {
+                this.leftToken = first;
+            }
         }
 
         checkTokenPair(token1, token2) {
@@ -98,20 +118,38 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
             // const set = new Set([this.leftToken, this.rightToken]);
 
             // return this.pastTrades.filter(x => set.has(x.payToken) && set.has(x.buyToken)).slice(-10);
-            return this.pastTrades;
+            return this.pastTrades.slice(-15);
         }
 
+        _fetchPastOffers_task = undefined;
+
         _fetchPastOffers = flow(function* (token1, token2) {  
-            this.pastOffers = token2
-                ? yield this.offerService.getPastOffers(token1, token2, 10)
-                : [];
+            this.pastOffers = [];
+
+            if (token1 && token2) {
+                this.pastOffers = yield this.offerService.getPastOffers(token1, token2, 10);
+            }
         })
+
         fetchPastOffers(token1, token2) {
             if (this._fetchPastOffers_task) {
                 this._fetchPastOffers_task.cancel();
             }
-
+            
             this._fetchPastOffers_task = this._fetchPastOffers(token1, token2);
+        }
+
+        clearPastOffer() {
+            if (this._fetchPastOffers_task) {
+                this._fetchPastOffers_task.cancel();
+                this._fetchPastOffers_task = undefined;
+            }
+
+            this.pastOffers = [];
+        }
+
+        get isOrderLoading() {
+            return this._fetchPastOffers_task !== undefined;
         }
 
         setToken(side, token) {
@@ -127,7 +165,11 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
     }
 
     return decorate(Store, {
+        _fetchPastOffers_task: observable.ref,
+        fetchPastOffers: action,
+        setTokenPairs: action,
         trades: computed,
+        tokens: observable.ref,
         mapTokenAddrToPair: observable.ref,
         onUpdateTrade: action,
         pastOffers: observable.ref,
@@ -136,5 +178,6 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
         leftToken: observable.ref,
         rightToken: observable.ref,
         setToken: action,
+        clearPastOffer: action,
     });
 }

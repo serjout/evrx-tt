@@ -18,11 +18,11 @@ module.exports = ({ Token }) => class Offer {
         }
 
         this.pay = {
-            token: new Token(payToken),
+            token: Token.getByAddr(payToken),
             amount: BigInt(payAmount),
         };
         this.buy = {
-            token: new Token(buyToken),
+            token: Token.getByAddr(buyToken),
             amount: BigInt(buyAmount),
         }
         this.id = id;

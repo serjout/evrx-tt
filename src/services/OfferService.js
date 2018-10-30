@@ -6,6 +6,10 @@ const { PRECISION, PRECISION_MUL } = require('../const');
 
 const createDownCount = count => () => count-- !== 0;
 
+function isEmptyId(id) {
+    return BigInt(id) === BigInt(0);
+}
+
 // TODO listen events and update loaded orders
 module.exports = ({ Token, Offer }) => class OfferService {
     /**
@@ -23,19 +27,29 @@ module.exports = ({ Token, Offer }) => class OfferService {
         let curr = this._mapPairToBest[pairKey];
 
         if (curr === undefined) {
-            const id = await theContract.methods.getBestOffer(token1.address, token2.address).call();
-            
-            if (BigInt(id) === BigInt(0)) {
-                return result;
-            }
+            const id = await theContract.methods.getBestOffer(
+                token2.address, 
+                token1.address
+            ).call();
 
             curr = await this.getById(id);
-            this._mapPairToBest[pairKey] = curr;
-            result.push(curr);
+
+            if (curr !== undefined) {
+                this._mapPairToBest[pairKey] = curr;
+                result.push(curr);
+            }
         }
 
-        while(stopIfFalse(curr) && curr._next !== undefined) {
+        while (
+            curr !== undefined && 
+            stopIfFalse(curr) && 
+            curr._next !== undefined
+        ) {
             const next = await this.getById(curr._next);
+
+            if (next === undefined) {
+                break;
+            }
             next._prev = curr.id;
             curr = next;
             result.push(curr);
@@ -125,11 +139,16 @@ module.exports = ({ Token, Offer }) => class OfferService {
     }
 
     async getById(id) {
+        if (isEmptyId(id)) {
+            return undefined;
+        }
+
         if (this._offers[id] === undefined) {
             const [o, nextId] = await Promise.all([
                 theContract.methods.offers(id).call(),
                 theContract.methods.getWorseOffer(id).call(),
             ]);
+
             const offer = new Offer(id, o.owner, o.pay_gem, o.pay_amt, o.buy_gem, o.buy_amt, o.timestamp);
 
             offer._next = nextId;

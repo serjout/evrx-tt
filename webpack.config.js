@@ -13,8 +13,9 @@ module.exports = (env, argv = { mode: 'development' }) => ({
   resolve: {
     extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx'],
     alias: {
-      './guide.styl$': path.join(__dirname, 'src/front/guide.styl')
-    }
+      './guide.styl$': path.join(__dirname, 'src/front/guide.styl'),
+      'src': path.join(__dirname,('src')),
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './index.html', hash: true }),

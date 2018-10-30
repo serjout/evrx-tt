@@ -6,7 +6,9 @@ class Panel extends React.Component {
     render() {
         return (
             <section className={cn(s.Root, this.props.className)} data-cmp-name="Panel">
-                {this.props.children}
+                <div className={s.Inner}>
+                    {this.props.children}
+                </div>
             </section>
         );
     }

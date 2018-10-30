@@ -12,9 +12,9 @@ module.exports = ({ Token }) => class Trade {
     instanceId = -1;  
 
     constructor(payToken, payAmount, buyToken, buyAmount) {
-        this.payToken = new Token(payToken);
+        this.payToken = Token.getByAddr(payToken);
         this.payAmount = payAmount;
-        this.buyToken = new Token(buyToken);
+        this.buyToken = Token.getByAddr(buyToken);
         this.buyAmount = buyAmount;   
         this.instanceId = i++;     
     }

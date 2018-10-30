@@ -43,8 +43,7 @@ function moveDecimalPoint(
     }
 
     if (precision !== +Infinity) {
-        const pointIdx = result.indexOf('.');
-        result = result.slice(0, pointIdx + precision + 1);
+        result = cutOffFractionalPart(result, precision)
     }
 
     result = trimZeros(result);
@@ -52,4 +51,16 @@ function moveDecimalPoint(
     return result;
 }
 
-module.exports = { moveDecimalPoint };
+function cutOffFractionalPart(decimal, length) {
+    const s = String(decimal);
+    const pointIdx = s.indexOf('.');
+    let cutOffTo = pointIdx + length + 1;
+    const fractionalPart = s.slice(pointIdx + 1);
+    const notZeroIdx = fractionalPart.split('').findIndex(c => c !=='0') + pointIdx + 2;
+    if (notZeroIdx > cutOffTo) {
+        cutOffTo = notZeroIdx;
+    }
+    return s.slice(0, cutOffTo);
+}
+
+module.exports = { moveDecimalPoint, cutOffFractionalPart };

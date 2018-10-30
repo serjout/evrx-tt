@@ -1,5 +1,44 @@
 @require 'guide.styl';
 
 .Root {
-    background-color: blue;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.List {
+    display: grid;
+    width: 100%;
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
+    font-size: 14px;
+    padding: 0;
+    margin: 5px 0;
+}
+
+.Termin {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.Definition {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.Title {
+    font-size: 16px;
+    font-weight: bold;
+
+    &_buy {
+        color: $color-green;
+    }
+
+    &_sell {
+        color: $color-red;
+    }
 }

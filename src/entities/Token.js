@@ -7,10 +7,11 @@ const mapTokenToAddr = contractCfg.tokens[ETH_ENV];
 module.exports = () => {
     class Token {
         static getByAddr(addr) {
-            if (!(addr in Token._cache)) {
-                Token._cache[addr] = new Token(addr);
-            }
-            return Token._cache[addr];
+            addr = addr.toLowerCase();
+
+            return (addr in Token._cache)
+                ? Token._cache[addr]
+                : new Token(addr);
         }
 
         static getFewTokens(amount) {
@@ -29,19 +30,25 @@ module.exports = () => {
             return this.ticker;
         }
 
-        constructor(address) {
-            if (address === undefined) {
-                throw new Error(`Missing argument address`);
+        equals(x) {
+            if (this.address && x.address) {
+                return x.address = this.address;
             }
-            this.ticker = Token.mapAddrToToken[address.toLowerCase()];
+
+            throw new Error('Incorrect Token');
+        }
+
+        constructor(address) {
+            address = address.toLowerCase();
+            this.ticker = Token.mapAddrToToken[address];
             if (this.ticker === undefined) {
                 throw new Error(`Unknown token ${address}`);
             }
-            this.address = address;
-            
+            this.address = address;     
             if (address in Token._cache) {
                 throw new Error(`Token ${address} already exits. Use Token.getByAddr(address)`);
             }
+            Token._cache[address] = this;
         }
     }
 

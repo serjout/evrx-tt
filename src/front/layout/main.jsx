@@ -1,10 +1,12 @@
 const React = require('react');
 const { observer } = require('mobx-react')
 const { Panel } = require('../components/panel');
-const { Order } = require('../components/Order');
 const { Select } = require('../components/Select');
 const { Trade } = require('../components/Trade');
+const { Order } = require('../components/Order');
 const { Store } = require('../../mobx');
+const cn = require('classnames');
+
 const s = require('./index.styl');
 
 const store = new Store();
@@ -18,8 +20,12 @@ const MainLayout = observer(class _ extends React.Component {
     }
 
     render() {
+        const left = store.leftToken;
+        const hasOrders = store.pastOffers.length > 0;
+        const hasTrades = store.trades.length > 0;
+
         return  <div className={s.Root} data-cmp-name="MainLayout">
-            <Panel>
+            <Panel className={s.Top}>
                 <h1 className={s.Header}>
                     {`Pair ${store.leftToken} / ${ store.rightToken || '---' }`}
                 </h1>
@@ -44,20 +50,49 @@ const MainLayout = observer(class _ extends React.Component {
                     }
                 />
             </Panel>
-            <Panel>
-                <ul>
-                    {store.pastOffers.map(x => <div>
-                        {`${x.id}  ${x.decimalPrice} ${x.buy.amount}`}
-                    </div>)}
-                </ul>
-            </Panel>
-            <Panel>
-                <h2 className={s.SubHeader}>Past trades</h2>
-                <ul className={s.TradeList}>
-                    <li className={s.TradeItem}>
-                        {store.trades.map(x => <Trade trade={x} className={s.TradeItem} key={x.instanceId} />)}
-                    </li>
-                </ul>
+            <Panel key="orders" className={s.ListPanelCt}>
+                <div className={cn(s.ListPanel, {
+                    [s.ListPanel_collapsed]: !hasOrders
+                })}>
+                    <h2 className={s.ListHeader}>
+                        {cn({
+                            "No orders": !hasOrders && !store.isOrderLoading,
+                            "Loading...": !hasOrders && store.isOrderLoading,
+                            "Past orders": hasOrders,
+                        })}
+                    </h2>
+                    {hasOrders && <ul className={s.List}>
+                        {store.pastOffers.map(x => 
+                            <li className={s.ListItem} key={String(x.id)}>
+                                <Order
+                                    offer={x} 
+                                    leftToken={left} 
+                                />
+                            </li>
+                        )}
+                    </ul>}
+                </div>
+            </Panel>    
+            <Panel key="trades" className={s.ListPanelCt}>
+                <div className={cn(s.ListPanel, {
+                    [s.ListPanel_collapsed]: !hasTrades
+                })}>
+                    <h2 className={s.ListHeader}>
+                        {cn({
+                            "Loading...": !hasTrades,
+                            "Past orders": hasTrades,
+                        })}
+                    </h2>
+                    {hasTrades && <ul className={s.List}>
+                        {store.trades.map(x => 
+                            <li className={s.ListItem} key={String(x.instanceId)}>
+                                <Trade 
+                                    trade={x} 
+                                />
+                            </li>
+                        )}
+                    </ul>}
+                </div>
             </Panel>
         </div>
     }

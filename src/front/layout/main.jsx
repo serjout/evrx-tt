@@ -4,6 +4,7 @@ const { Panel } = require('../components/panel');
 const { Select } = require('../components/Select');
 const { Trade } = require('../components/Trade');
 const { Order } = require('../components/Order');
+const { List } = require('../components/List');
 const { Store } = require('../../mobx');
 const cn = require('classnames');
 
@@ -14,7 +15,7 @@ store.init();
 
 window.___o = store;
 
-const MainLayout = observer(class _ extends React.Component {
+const MainLayout = observer(class extends React.Component {
     handleChange = ({ key, value, name: side }) => {
         store.setToken(side, value);
     }
@@ -50,50 +51,30 @@ const MainLayout = observer(class _ extends React.Component {
                     }
                 />
             </Panel>
-            <Panel key="orders" className={s.ListPanelCt}>
-                <div className={cn(s.ListPanel, {
-                    [s.ListPanel_collapsed]: !hasOrders
-                })}>
-                    <h2 className={s.ListHeader}>
-                        {cn({
-                            "No orders": !hasOrders && !store.isOrderLoading,
-                            "Loading...": !hasOrders && store.isOrderLoading,
-                            "Past orders": hasOrders,
-                        })}
-                    </h2>
-                    {hasOrders && <ul className={s.List}>
-                        {store.pastOffers.map(x => 
-                            <li className={s.ListItem} key={String(x.id)}>
-                                <Order
-                                    offer={x} 
-                                    leftToken={left} 
-                                />
-                            </li>
-                        )}
-                    </ul>}
-                </div>
-            </Panel>    
-            <Panel key="trades" className={s.ListPanelCt}>
-                <div className={cn(s.ListPanel, {
-                    [s.ListPanel_collapsed]: !hasTrades
-                })}>
-                    <h2 className={s.ListHeader}>
-                        {cn({
-                            "Loading...": !hasTrades,
-                            "Past trades": hasTrades,
-                        })}
-                    </h2>
-                    {hasTrades && <ul className={s.List}>
-                        {store.trades.map(x => 
-                            <li className={s.ListItem} key={String(x.instanceId)}>
-                                <Trade 
-                                    trade={x} 
-                                />
-                            </li>
-                        )}
-                    </ul>}
-                </div>
-            </Panel>
+            <List 
+                key="orders" 
+                className={s.ListPanelCt}
+                itemRender={Order}
+                itemList={store.pastOffers}
+                title={cn({
+                    "No orders": !hasOrders && !store.isOrderLoading,
+                    "Loading...": !hasOrders && store.isOrderLoading,
+                    "Past orders": hasOrders,
+                })}
+                itemKeyProperty="id"
+                leftToken={left} 
+            />
+            <List 
+                key="trades"
+                className={s.ListPanelCt}
+                itemRender={Trade}
+                itemList={store.trades}
+                title={cn({
+                    "Loading...": !hasTrades,
+                    "Past trades": hasTrades,
+                })}
+                itemKeyProperty="instanceId"
+            />
         </div>
     }
 })

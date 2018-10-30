@@ -6,11 +6,11 @@ const { moveDecimalPoint, cutOffFractionalPart } = require('src/utils/move-decim
 
 let tokenShape;
 let sideShape;
-let FRACTION_LEN = 2;
+let FRACTION_LEN = 4;
 
 class Order extends React.Component {
     static propTypes = {
-        offer: propTypes.shape({
+        item: propTypes.shape({
             buy: sideShape = propTypes.shape({
                 amount: propTypes.any,
                 token: tokenShape = propTypes.shape({
@@ -27,7 +27,7 @@ class Order extends React.Component {
 
     render() {
         const p = this.props;
-        const o = p.offer;
+        const o = p.item;
 
         const side = o.buy.token.equals(p.leftToken)
             ? 'buy'

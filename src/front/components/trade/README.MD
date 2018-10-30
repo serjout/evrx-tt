@@ -1,7 +1,7 @@
 trade itemm: 
 
     <Trade 
-        trade={{        
+        item={{        
             buyAmount: '1000',
             payAmount: '70000',
             payToken: {

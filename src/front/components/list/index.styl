@@ -1,0 +1,73 @@
+@require 'guide.styl';
+
+.Root {
+}
+
+.ListPanel {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+
+    transition: 
+        min-height ease 0.5s,
+        height ease 0.5s;
+
+    height: 60vw;
+    min-height: 300px;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.ListPanel_collapsed {
+    height: 20px;
+    min-height: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.ListHeader {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px;
+}
+
+.List {
+    display: block;
+    box-sizing: border-box;
+    margin: 15px;
+    padding: 0 15px;
+    border: 1px solid $color-light-gray;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+.ListItem {
+    display: block;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 5px;
+    list-style: none;
+    border: 0;
+}
+
+
+@media screen and (min-width: $mobile-width) {
+    .List {
+        max-height: none;
+        padding: 0;
+        margin: 10px 0;
+        border-width: 0;
+        max-height: none;
+    }
+
+    .ListPanel {
+        padding: 20px;
+        height: auto;
+    }
+}

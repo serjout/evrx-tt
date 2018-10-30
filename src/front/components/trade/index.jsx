@@ -5,11 +5,11 @@ const propTypes = require('prop-types');
 const { moveDecimalPoint, cutOffFractionalPart } = require('src/utils/move-decimal-point')
 
 let tokenShape;
-let FRACTION_LEN = 2;
+let FRACTION_LEN = 4;
 
 class Trade extends React.Component {
     static propTypes = {
-        trade: propTypes.shape({
+        item: propTypes.shape({
             buyAmount: propTypes.any,
             payAmount: propTypes.any,
             payToken: tokenShape = propTypes.shape({
@@ -23,7 +23,7 @@ class Trade extends React.Component {
 
     render() {
         const p = this.props;
-        const t = p.trade;
+        const t = p.item;
 
         return (
             <div className={cn(s.Root, p.className)} data-cmp-name="Trade">

@@ -19,12 +19,9 @@ module.exports = ({ Token, Offer }) => class OfferService {
      * @param {Offer => boolean} stopIfFalse 
      */
     async getOffersUntil(token1, token2, stopIfFalse = createDownCount(19)) {
-        // let stopLogQueueBlocking;
-        // this._untilLogQueueBlock = new Promise(done => stopLogQueueBlocking = done);
-
         const result = [];
         const pairKey = this._getPairKey(token1, token2);
-        let curr; // = this._mapPairToBest[pairKey];
+        let curr;
 
         if (curr === undefined) {
             const id = await theContract.methods.getBestOffer(
@@ -35,7 +32,6 @@ module.exports = ({ Token, Offer }) => class OfferService {
             curr = await this.getById(id);
 
             if (curr !== undefined) {
-                this._mapPairToBest[pairKey] = curr;
                 result.push(curr);
 
                 do {
@@ -56,14 +52,12 @@ module.exports = ({ Token, Offer }) => class OfferService {
             }
         }
 
-        // stopLogQueueBlocking();
         return result;
     }
 
     async getRecommendationsForVolumeBuy(token1, token2, volume = BigInt(0)) {
         let sumPay = BigInt(0);
         let sumBuy = BigInt(0);
-
         const predicate = (offer) => {
             let stop = true;
 
@@ -77,34 +71,32 @@ module.exports = ({ Token, Offer }) => class OfferService {
                     const rate = surplusBuy * PRECISION_MUL / offer.buy.amount;
                     const surplusPay = offer.pay.amount * rate / PRECISION_MUL;
 
-                    // console.log('surplusPay', surplusPay);
-                    // console.log('surplusPay sub', offer.pay.amount - surplusPay);
-                    // console.log(moveDecimalPoint(offer.pay.amount * PRECISION_MUL / surplusPay, -PRECISION));
-                    // console.log(moveDecimalPoint(offer.buy.amount * PRECISION_MUL / surplusBuy, -PRECISION));
-
                     sumPay += offer.pay.amount - surplusPay;
                     sumBuy += offer.buy.amount - surplusBuy;
+                } else {
+                    sumBuy = sumNext; // 
+                    sumPay += offer.pay.amount;
                 }
-            } else {
-                sumBuy = sumNext;
-                sumPay += offer.pay.amount;
-            }
-
+            } 
             return stop;
         }
 
         const offers = await this.getOffersUntil(token1, token2, predicate);
-        // console.log('sumBuy ', sumBuy, 'volume ', volume, 'sumPay ', sumPay);
+        const canBeFullfilled = volume === sumBuy;
+
+        if (sumPay === BigInt(0)) {
+            return { error: "" }
+        }
 
         return {
+            canBeFullfilled,
             requestedVolume: String(volume),
             buy: token1.ticker,
             pay: token2.ticker,
             minPrice: String(offers[0] && offers[0].decimalPrice),
-            finalPrice: moveDecimalPoint(sumBuy * PRECISION_MUL / sumPay, -PRECISION), 
             maxPrice: String(offers.length && offers[offers.length - 1].decimalPrice),
+            finalPrice: moveDecimalPoint(sumBuy * PRECISION_MUL / sumPay, -PRECISION), 
             summaryPayment: String(sumPay),  
-            // offers,
         };
     }
 
@@ -114,38 +106,20 @@ module.exports = ({ Token, Offer }) => class OfferService {
         return this.getOffersUntil(token1, token2, predicate);
     }
 
-    // _addToLogQueue(events) {
-    //     this._logQueue.push.call(this._logQueue, events);
-
-    //     if (this._logQueuePromise === undefined) {
-    //         this._logQueuePromise = this._processLogQueue();
-    //     }
-    // }
-
-    // async _processLogQueue() {
-    //     while(this._logQueue.length > 0) {
-    //         await this._untilLogQueueBlock();
-
-    //         const event = this._logQueue.shift();
-
-    //         // TODO
-    //         console.log(event)
-    //     }
-    //     this._logQueuePromise = undefined;
-    // }
-
-    async syncOffers() {
-        let loop = true;
-        const fromBlock = await fromBlockPromise;
-        const cancel = () => loop = true;
-
-        return cancel;
+    _syncEvent = undefined;
+    async sync() {
+        if (!this._syncEvent) {
+            this._syncEvent = theContract.events.LogItemUpdate().on("data", event => {
+                console.log('eeeveeennnttt', event);
+            });
+        }
     }
 
     async getById(id) {
         if (isEmptyId(id)) {
             return undefined;
         }
+        this.sync();
 
         if (this._offers[id] === undefined) {
             const [o, nextId] = await Promise.all([

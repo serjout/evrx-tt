@@ -16,6 +16,7 @@ configure({
 });
 
 const LOADING_ARRAY = [];
+const LOADING_RECOMMENDS = { recomentations: 'Loading...' }
 
 module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) => {
     class Store {
@@ -153,6 +154,8 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
 
         execPriceQuery = oneCall(flow(function* (token1, token2, amount) {
             const volume = moveDecimalPoint(amount, 18);
+
+            this.recommends = LOADING_RECOMMENDS;
 
             const result = yield this.offerService.getRecommendationsForVolumeBuy(
                 token1, token2, BigInt(volume)

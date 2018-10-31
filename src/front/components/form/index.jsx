@@ -5,12 +5,14 @@ const { Button } = require('../button');
 const { Input } = require('../input');
 const { Panel } = require('../panel');
 
+const REQUIRED_FIELD = 'Required field';
+
 const s = require('./index.styl');
 
 class Form extends React.PureComponent {
     state = {
         value: '',
-        validation: '',
+        validation: REQUIRED_FIELD,
     }
 
     handleSubmit = (event) => {
@@ -42,6 +44,10 @@ class Form extends React.PureComponent {
     }
 
     static validate(value) {
+        if (value === '') {
+            return REQUIRED_FIELD;
+        }
+
         const n = Number(value);
 
         if (Number.isNaN(n)) {
@@ -59,8 +65,8 @@ class Form extends React.PureComponent {
         const p = this.props; 
 
         return <Panel className={cn(p.className, s.FormCt)}>
-            <div>
-                <h2 className={s.Title}>Calculate</h2>
+            <div className={s.Wrapper}>
+                <h2 className={s.Title}>Buy volume</h2>
                 <form className={s.Form} onSubmit={this.handleSubmit}>
                     <Input 
                         className={s.Input} 
@@ -79,6 +85,7 @@ class Form extends React.PureComponent {
                         Submit
                     </Button>
                 </form>
+                {p.children}
             </div>
         </Panel>
     }

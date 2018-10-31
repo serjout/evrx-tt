@@ -1,3 +1,4 @@
+const { moveDecimalPoint } = require('src/utils/move-decimal-point');
 const { 
     decorate, 
     observable, 
@@ -123,8 +124,8 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
         }
 
         _fetchPastOffers_task = undefined;
-
-        _fetchPastOffers = flow(function* (token1, token2) {  
+        
+        fetchPastOffers = flow(function* (token1, token2) {  
             this.pastOffers = [];
 
             if (token1 && token2) {
@@ -137,7 +138,6 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
                 this._fetchPastOffers_task.cancel();
             }
             
-
             let task;
             try {
 
@@ -163,6 +163,20 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
             this.pastOffers = [];
         }
 
+        recommends = {};
+
+        execPriceQuery = flow(function* (amount) {
+            const t1 = this.leftToken;
+            const t2 = this.rightToken;
+            const volume = moveDecimalPoint(amount, 18);
+
+            const result = yield this.offerService.getRecommendationsForVolumeBuy(
+                t1, t2, BigInt(volume)
+            );
+
+            this.recommends = result;
+        });
+
         get isOrderLoading() {
             const s = Symbol('check promise pending');
             return this._fetchPastOffers_task !== undefined;
@@ -182,6 +196,7 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
 
     return decorate(Store, {
         _fetchPastOffers_task: observable.ref,
+        recommends: observable.ref,
         fetchPastOffers: action,
         setTokenPairs: action,
         trades: computed,

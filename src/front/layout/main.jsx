@@ -30,6 +30,11 @@ const MainLayout = observer(class extends React.Component {
         const hasOrders = store.pastOffers.length > 0;
         const hasTrades = store.trades.length > 0;
 
+        const recommends = store.recommends &&
+            JSON.stringify(
+                store.recommends, null, 4
+            );
+
         return  <div className={s.Root} data-cmp-name="MainLayout">
             <Panel className={s.Top}>
                 <h1 className={s.Header}>
@@ -73,7 +78,11 @@ const MainLayout = observer(class extends React.Component {
                     leftToken={store.leftToken}
                     rightToken={store.rightToken}
                     onSubmit={this.handleSubmitForm}
-                />
+                >
+                    <code className={s.Code}>
+                        {recommends}
+                    </code>
+                </Form>
                 <List 
                     key="orders" 
                     itemRender={Order}

@@ -40,11 +40,7 @@ module.exports = ({ Token, Offer }) => class OfferService {
             }
         }
 
-        while (
-            curr !== undefined && 
-            stopIfFalse(curr) && 
-            curr._next !== undefined
-        ) {
+        do {
             const next = await this.getById(curr._next);
 
             if (next === undefined) {
@@ -53,7 +49,12 @@ module.exports = ({ Token, Offer }) => class OfferService {
             next._prev = curr.id;
             curr = next;
             result.push(curr);
-        }
+
+        } while (
+            curr !== undefined && 
+            stopIfFalse(curr) && 
+            curr._next !== undefined
+        )
 
         // stopLogQueueBlocking();
         return result;
@@ -96,11 +97,11 @@ module.exports = ({ Token, Offer }) => class OfferService {
         // console.log('sumBuy ', sumBuy, 'volume ', volume, 'sumPay ', sumPay);
 
         return {
-            minPrice:  offers[0].decimalPrice,
+            minPrice: String(offers.length && offers.decimalPrice),
             finalPrice: moveDecimalPoint(sumBuy * PRECISION_MUL / sumPay, -PRECISION), 
-            maxPrice: offers[offers.length - 1].decimalPrice,
-            summaryPayment: sumPay,  
-            offers,
+            maxPrice: String(offers.length && offers[offers.length - 1].decimalPrice),
+            summaryPayment: String(sumPay),  
+            // offers,
         };
     }
 

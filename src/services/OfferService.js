@@ -24,7 +24,7 @@ module.exports = ({ Token, Offer }) => class OfferService {
 
         const result = [];
         const pairKey = this._getPairKey(token1, token2);
-        let curr = this._mapPairToBest[pairKey];
+        let curr; // = this._mapPairToBest[pairKey];
 
         if (curr === undefined) {
             const id = await theContract.methods.getBestOffer(
@@ -37,24 +37,24 @@ module.exports = ({ Token, Offer }) => class OfferService {
             if (curr !== undefined) {
                 this._mapPairToBest[pairKey] = curr;
                 result.push(curr);
+
+                do {
+                    const next = await this.getById(curr._next);
+        
+                    if (next === undefined) {
+                        break;
+                    }
+                    next._prev = curr.id;
+                    curr = next;
+                    result.push(curr);
+        
+                } while (
+                    curr !== undefined && 
+                    stopIfFalse(curr) && 
+                    curr._next !== undefined
+                )
             }
         }
-
-        do {
-            const next = await this.getById(curr._next);
-
-            if (next === undefined) {
-                break;
-            }
-            next._prev = curr.id;
-            curr = next;
-            result.push(curr);
-
-        } while (
-            curr !== undefined && 
-            stopIfFalse(curr) && 
-            curr._next !== undefined
-        )
 
         // stopLogQueueBlocking();
         return result;
@@ -97,7 +97,10 @@ module.exports = ({ Token, Offer }) => class OfferService {
         // console.log('sumBuy ', sumBuy, 'volume ', volume, 'sumPay ', sumPay);
 
         return {
-            minPrice: String(offers.length && offers.decimalPrice),
+            requestedVolume: String(volume),
+            buy: token1.ticker,
+            pay: token2.ticker,
+            minPrice: String(offers[0] && offers[0].decimalPrice),
             finalPrice: moveDecimalPoint(sumBuy * PRECISION_MUL / sumPay, -PRECISION), 
             maxPrice: String(offers.length && offers[offers.length - 1].decimalPrice),
             summaryPayment: String(sumPay),  

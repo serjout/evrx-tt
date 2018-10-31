@@ -1,4 +1,5 @@
 const { moveDecimalPoint } = require('src/utils/move-decimal-point');
+const { oneCall } = require('./utils/decorator-one-call');
 const { 
     decorate, 
     observable, 
@@ -13,6 +14,8 @@ const {
 configure({
     enforceActions: "observed",
 });
+
+const LOADING_ARRAY = [];
 
 module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) => {
     class Store {
@@ -42,9 +45,14 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
             autorun(() => {
                 const left = this.leftToken;
                 const right = this.rightToken;
+                const amount = this.amount;
 
                 if (left && right) {
                     this.fetchPastOffers(left, right);
+                    
+                    if (amount) {
+                        this.execPriceQuery(left, right, amount);
+                    }
                 } else {
                     this.clearPastOffer()
                 }
@@ -56,6 +64,10 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
             this.tokenService.syncMapTokenAddrToPair().then(this.setTokenPairs);
 
             this.isInited = true;
+        }
+
+        setAmount(amount) {
+            this.amount = amount;
         }
 
         setTokenPairs = (map) => {
@@ -122,64 +134,35 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
             // return this.pastTrades.filter(x => set.has(x.payToken) && set.has(x.buyToken)).slice(-10);
             return this.pastTrades.slice(-15);
         }
-
-        _fetchPastOffers_task = undefined;
         
-        fetchPastOffers = flow(function* (token1, token2) {  
-            this.pastOffers = [];
+        fetchPastOffers = oneCall(flow(function* (token1, token2) {  
+            this.pastOffers = LOADING_ARRAY;
 
             if (token1 && token2) {
                 this.pastOffers = yield this.offerService.getPastOffers(token1, token2, 10);
             }
-        })
-
-        async fetchPastOffers(token1, token2) {
-            if (this._fetchPastOffers_task) {
-                this._fetchPastOffers_task.cancel();
-            }
-            
-            let task;
-            try {
-
-                task = this._fetchPastOffers_task = this._fetchPastOffers(token1, token2);
-                await task;
-
-            } catch(e) {
-                // can be canceled
-                
-            } finally {runInAction(() => {
-                // if still our task
-                if (task === this._fetchPastOffers_task) {
-                    this._fetchPastOffers_task = undefined;
-                }
-            });}
-        }
+        }))
 
         clearPastOffer() {
-            if (this._fetchPastOffers_task) {
-                this._fetchPastOffers_task.cancel();
-            }
+            this.fetchPastOffers.cancel();
 
             this.pastOffers = [];
         }
 
         recommends = {};
 
-        execPriceQuery = flow(function* (amount) {
-            const t1 = this.leftToken;
-            const t2 = this.rightToken;
+        execPriceQuery = oneCall(flow(function* (token1, token2, amount) {
             const volume = moveDecimalPoint(amount, 18);
 
             const result = yield this.offerService.getRecommendationsForVolumeBuy(
-                t1, t2, BigInt(volume)
+                token1, token2, BigInt(volume)
             );
 
             this.recommends = result;
-        });
+        }));
 
         get isOrderLoading() {
-            const s = Symbol('check promise pending');
-            return this._fetchPastOffers_task !== undefined;
+            return this.pastOffers === LOADING_ARRAY;
         }
 
         setToken(side, token) {
@@ -195,9 +178,9 @@ module.exports = ({ Offer, OfferService, TradeService, Token, TokenService }) =>
     }
 
     return decorate(Store, {
-        _fetchPastOffers_task: observable.ref,
+        setAmount: action,
+        amount: observable,
         recommends: observable.ref,
-        fetchPastOffers: action,
         setTokenPairs: action,
         trades: computed,
         tokens: observable.ref,

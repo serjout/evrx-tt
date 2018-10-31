@@ -22,7 +22,7 @@ const MainLayout = observer(class extends React.Component {
     }
 
     handleSubmitForm = (amount) => {
-        store.execPriceQuery(amount);
+        store.setAmount(amount);
     }
 
     render() {

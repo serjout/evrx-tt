@@ -1,0 +1,51 @@
+@require 'guide.styl';
+
+$input-sub-text-height = 12px;
+
+.Input {
+    box-sizing: border-box;
+    padding: 0;
+    margin 0 0 $input-sub-text-height 0;
+    display: inline-block;
+    padding: 0 10px;
+    line-height: $button-line-height;
+    font-size: $button-fint-size;
+    border: $button-border;
+    border-radius: 0;
+    width: 100%;
+
+    &:focus {
+        outline: none;
+        box-shadow: $selection-box-shadow 
+    }
+}
+
+.Input_error {
+    border-color: $color-error;
+
+    &:focus {
+        outline: none;
+        box-shadow: $error-box-shadow 
+    }
+}
+
+.InputCt {
+    maring 0;
+    position: relative;
+}
+
+.SubText {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: $input-sub-text-height;
+    line-height: $input-sub-text-height;
+    font-size: $input-sub-text-height - 1px;
+
+    &_error {
+        color: $color-error;
+    }
+}
+
+

@@ -1,10 +1,11 @@
 const React = require('react');
 const { observer } = require('mobx-react')
 const { Panel } = require('../components/panel');
-const { Select } = require('../components/Select');
-const { Trade } = require('../components/Trade');
-const { Order } = require('../components/Order');
-const { List } = require('../components/List');
+const { Select } = require('../components/select');
+const { Trade } = require('../components/trade');
+const { Order } = require('../components/order');
+const { List } = require('../components/list');
+const { Form } = require('../components/form');
 const { Store } = require('../../mobx');
 const cn = require('classnames');
 
@@ -18,6 +19,10 @@ window.___o = store;
 const MainLayout = observer(class extends React.Component {
     handleChange = ({ key, value, name: side }) => {
         store.setToken(side, value);
+    }
+
+    handleSubmitForm = (amount) => {
+        store.execPriceQuery(amount);
     }
 
     render() {
@@ -52,19 +57,6 @@ const MainLayout = observer(class extends React.Component {
                 />
             </Panel>
             <List 
-                key="orders" 
-                className={s.ListPanelCt}
-                itemRender={Order}
-                itemList={store.pastOffers}
-                title={cn({
-                    "No orders": !hasOrders && !store.isOrderLoading,
-                    "Loading...": !hasOrders && store.isOrderLoading,
-                    "Past orders": hasOrders,
-                })}
-                itemKeyProperty="id"
-                leftToken={left} 
-            />
-            <List 
                 key="trades"
                 className={s.ListPanelCt}
                 itemRender={Trade}
@@ -75,6 +67,26 @@ const MainLayout = observer(class extends React.Component {
                 })}
                 itemKeyProperty="instanceId"
             />
+            <div className={s.Group}>
+                <Form 
+                    className={s.Form}
+                    leftToken={store.leftToken}
+                    rightToken={store.rightToken}
+                    onSubmit={this.handleSubmitForm}
+                />
+                <List 
+                    key="orders" 
+                    itemRender={Order}
+                    itemList={store.pastOffers}
+                    title={cn({
+                        "No orders": !hasOrders && !store.isOrderLoading,
+                        "Loading...": !hasOrders && store.isOrderLoading,
+                        "Past orders": hasOrders,
+                    })}
+                    itemKeyProperty="id"
+                    leftToken={left} 
+                />
+            </div>
         </div>
     }
 })

@@ -1,0 +1,61 @@
+@require 'guide.styl';
+
+$btn-active-border-shadow = $button-focus-shadow;
+$btn-bg-disabled-color = $color-light-gray;
+$btn-border-color = $color-gray;
+$bnt-active-bg = $color-hightlighted;
+
+.Button {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 0 10px 0 10px;
+    line-height: $button-line-height;
+    font-size: $button-fint-size;
+    border: $button-border;
+    border-radius: $button-border-radius;
+    text-align: left;
+    position: relative;
+    box-shadow: none;
+    transition: 
+        box-shadow 0.1s 0.1s, 
+        background-color 0.1s 0.1s, 
+        border-color 0.1s 0.1s;
+    outline: none;
+    background-color: var(--dropdown-input-button-bg-color);
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover {
+        box-shadow: $shadow-1;
+        outline: none;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: $btn-active-border-shadow;
+    }
+
+    &:focus&:hover {
+        box-shadow: $shadow-1, $btn-active-border-shadow;
+    }
+
+    &&&:active {
+        outline: none;
+        background-color: $bnt-active-bg;
+        box-shadow: $btn-active-border-shadow;
+    }
+
+    &_disabled {
+        cursor: default;
+        //background-color: $btn-bg-disabled-color;
+        //opacity: 0.5;
+        &:hover,
+        &:focus,
+        &:active {
+            border: 1px solid $btn-border-color;
+            box-shadow: none !important;
+        }
+    }
+}
+

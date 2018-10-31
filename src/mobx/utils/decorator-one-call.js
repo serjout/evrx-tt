@@ -3,7 +3,7 @@ function oneCall(flowMethod) {
     let inProgress = 0;
     let method = async function(...args) {
         try {
-            task && task.cancel()
+            method.cancel()
             inProgress++;
             task  = flowMethod.apply(this, args);
             await task;
@@ -21,7 +21,7 @@ function oneCall(flowMethod) {
             task.cancel();
             console.log('>>> canceled');
         } else {
-            console.log('>>> no task in proress');
+            console.log('>>> no task in progress');
         }
         console.log('---');
     }

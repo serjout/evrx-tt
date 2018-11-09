@@ -65,7 +65,7 @@ body {
   height: auto;
   visibility: visible;
 }
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 450px) {
   .index-Popup-5r3tP {
     border: none;
     box-shadow: none;
@@ -183,7 +183,7 @@ body {
   background-color: rgba(0,62,255,0.24);
   box-shadow: inset 2px 2px 7px 0 rgba(0,0,0,0.21);
 }
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 450px) {
   .index-List-24v-o {
     min-width: 0;
   }
@@ -312,7 +312,7 @@ body {
   list-style: none;
   border: 0;
 }
-@media screen and (min-width: 380px) {
+@media screen and (min-width: 450px) {
   .index-List-vYz0P {
     max-height: none;
     padding: 0;
@@ -479,7 +479,7 @@ body {
   color: #000;
   display: block;
 }
-@media screen and (min-width: 380px) {
+@media screen and (min-width: 450px) {
   .index-Root-RL6UV {
     width: 800px;
     flex-direction: row;

@@ -275,15 +275,15 @@ body {
   padding: 0;
   margin: 0;
   width: 100%;
-  transition: min-height ease 0.5s, height ease 0.5s;
+  transition: max-height ease 0.5s;
   height: 60vw;
-  min-height: 300px;
+  max-height: 60vw;
   display: flex;
   flex-direction: column;
 }
 .index-ListPanel_collapsed-3jsPd {
   height: 20px;
-  min-height: 20px;
+  max-height: 20px;
   align-items: center;
   justify-content: center;
 }
@@ -314,15 +314,14 @@ body {
 }
 @media screen and (min-width: 450px) {
   .index-List-vYz0P {
-    max-height: none;
     padding: 0;
     margin: 10px 0;
     border-width: 0;
-    max-height: none;
   }
   .index-ListPanel-2zBhj {
     padding: 20px;
     height: auto;
+    max-height: 2000px;
   }
 }
 
@@ -455,6 +454,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+  align-content: flex-start;
   gap: 10px;
   min-height: 100vh;
 }

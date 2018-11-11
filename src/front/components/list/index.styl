@@ -10,11 +10,10 @@
     width: 100%;
 
     transition: 
-        min-height ease 0.5s,
-        height ease 0.5s;
+        max-height ease 0.5s;
 
     height: 60vw;
-    min-height: 300px;
+    max-height: 60vw;
     
     display: flex;
     flex-direction: column;
@@ -22,7 +21,7 @@
 
 .ListPanel_collapsed {
     height: 20px;
-    min-height: 20px;
+    max-height: 20px;
     align-items: center;
     justify-content: center;
 }
@@ -59,15 +58,14 @@
 
 @media screen and (min-width: $mobile-width) {
     .List {
-        max-height: none;
         padding: 0;
         margin: 10px 0;
         border-width: 0;
-        max-height: none;
     }
 
     .ListPanel {
         padding: 20px;
         height: auto;
+        max-height: 2000px;
     }
 }
